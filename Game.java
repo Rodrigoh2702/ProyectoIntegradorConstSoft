@@ -8,7 +8,7 @@ public class Game {
     }
 
     private void createRooms() {
-        Room outside, theatre, pub, lab, office;
+        Room outside, theatre, pub, lab, office, nullRoom;
 
         // create the rooms
         outside = new Room("outside the main entrance of the university");
@@ -16,14 +16,16 @@ public class Game {
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
         office = new Room("in the computing admin office");
+        nullRoom = new NullRoom();
 
-        // initialise room exits
-        outside.setExits(null, theatre, lab, pub);
-        theatre.setExits(null, null, null, outside);
-        pub.setExits(null, outside, null, null);
-        lab.setExits(outside, office, null, null);
-        office.setExits(null, null, null, lab);
-
+        initializeRoomExits(outside, theatre, pub, lab, office, nullRoom);
+    }
+    public void initializeRoomExits(Room outside, Room theatre, Room pub, Room lab, Room office, Room nullRoom){
+        outside.setExits(nullRoom, theatre, lab, pub);
+        theatre.setExits(nullRoom, nullRoom, nullRoom, outside);
+        pub.setExits(nullRoom, outside, nullRoom, nullRoom);
+        lab.setExits(outside, office, nullRoom, nullRoom);
+        office.setExits(nullRoom, nullRoom, nullRoom, lab);
         currentRoom = outside; // start game outside
     }
 
@@ -32,13 +34,16 @@ public class Game {
 
         // Enter the main command loop. Here we repeatedly read commands and
         // execute them until the game is over.
-
-        boolean finished = false;
-        while (!finished) {
-            Command command = parser.getCommand();
-            finished = processCommand(command);
-        }
+        boolean playing = true;
+        do{
+            playing = stillPlaying();
+        }while(playing);
         System.out.println("Thank you for playing.  Good bye.");
+    }
+
+    public boolean stillPlaying(){
+        Command command = parser.getCommand();
+        return processCommand(command);
     }
 
     private void printWelcome() {
@@ -47,29 +52,14 @@ public class Game {
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
-        System.out.println("You are " + currentRoom.getDescription());
-        System.out.print("Exits: ");
-        if (currentRoom.northExit != null) {
-            System.out.print("north ");
-        }
-        if (currentRoom.eastExit != null) {
-            System.out.print("east ");
-        }
-        if (currentRoom.southExit != null) {
-            System.out.print("south ");
-        }
-        if (currentRoom.westExit != null) {
-            System.out.print("west ");
-        }
-        System.out.println();
+        moveRoom(currentRoom);
     }
 
     private boolean processCommand(Command command) {
-        boolean wantToQuit = false;
 
         if (command.isUnknown()) {
             System.out.println("I don't know what you mean...");
-            return false;
+            return true;
         }
 
         String commandWord = command.getCommandWord();
@@ -78,9 +68,9 @@ public class Game {
         if (commandWord.equals("go"))
             goRoom(command);
         if (commandWord.equals("quit"))
-            wantToQuit = quit(command);
+            return quit(command);
             
-        return wantToQuit;
+        return true;
     }
 
     // implementations of user commands:
@@ -96,15 +86,13 @@ public class Game {
         if (!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             System.out.println("Go where?");
-            return;
         }
 
         String direction = command.getSecondWord();
-
         // Try to leave current room.
         Room nextRoom = assignNextRoom(direction);
 
-        if (nextRoom == null) {
+        if (nextRoom.isNull()) {
             System.out.println("There is no door!");
         } else {
             moveRoom(nextRoom);
@@ -114,27 +102,27 @@ public class Game {
     private boolean quit(Command command) {
         if (command.hasSecondWord()) {
             System.out.println("Quit what?");
-            return false;
+            return true;
         } else {
-            return true; // signal that we want to quit
+            return false; // signal that we want to quit
         }
     }
 
     //assigs the room to move
     private Room assignNextRoom(String direction){
         if (direction.equals("north")) {
-            return currentRoom.northExit;
+            return currentRoom.getNorthExit();
         }
         if (direction.equals("east")) {
-            return currentRoom.eastExit;
+            return currentRoom.getEastExit();
         }
         if (direction.equals("south")) {
-            return currentRoom.southExit;
+            return currentRoom.getSouthExit();
         }
         if (direction.equals("west")) {
-            return currentRoom.westExit;
+            return currentRoom.getWestExit();
         }
-        return null;
+        return new NullRoom();
     }
 
     //changes your room
@@ -142,16 +130,16 @@ public class Game {
         currentRoom = nextRoom;
         System.out.println("You are " + currentRoom.getDescription());
         System.out.print("Exits: ");
-        if (currentRoom.northExit != null) {
+        if (!currentRoom.getNorthExit().isNull()) {
             System.out.print("north ");
         }
-        if (currentRoom.eastExit != null) {
+        if (!currentRoom.getEastExit().isNull()) {
             System.out.print("east ");
         }
-        if (currentRoom.southExit != null) {
+        if (!currentRoom.getSouthExit().isNull()) {
             System.out.print("south ");
         }
-        if (currentRoom.westExit != null) {
+        if (!currentRoom.getWestExit().isNull()) {
             System.out.print("west ");
         }
         System.out.println();
