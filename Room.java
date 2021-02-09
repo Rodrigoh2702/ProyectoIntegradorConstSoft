@@ -24,4 +24,8 @@ public class Room {
         return description;
     }
 
+    public boolean isNull(){
+        return false;
+    }
 }
+
