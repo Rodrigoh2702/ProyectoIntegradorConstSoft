@@ -115,16 +115,16 @@ public class Game {
     //assigs the room to move
     private Room assignNextRoom(String direction){
         if (direction.equals("north")) {
-            return currentRoom.northExit;
+            return currentRoom.getNorthExit();
         }
         if (direction.equals("east")) {
-            return currentRoom.eastExit;
+            return currentRoom.getEastExit();
         }
         if (direction.equals("south")) {
-            return currentRoom.southExit;
+            return currentRoom.getSouthExit();
         }
         if (direction.equals("west")) {
-            return currentRoom.westExit;
+            return currentRoom.getWestExit();
         }
         return null;
     }
@@ -134,16 +134,16 @@ public class Game {
         currentRoom = nextRoom;
         System.out.println("You are " + currentRoom.getDescription());
         System.out.print("Exits: ");
-        if (!currentRoom.northExit.isNull()) {
+        if (!currentRoom.getNorthExit().isNull()) {
             System.out.print("north ");
         }
-        if (!currentRoom.eastExit.isNull()) {
+        if (!currentRoom.getEastExit().isNull()) {
             System.out.print("east ");
         }
-        if (!currentRoom.southExit.isNull()) {
+        if (!currentRoom.getSouthExit().isNull()) {
             System.out.print("south ");
         }
-        if (!currentRoom.westExit.isNull()) {
+        if (!currentRoom.getWestExit().isNull()) {
             System.out.print("west ");
         }
         System.out.println();
