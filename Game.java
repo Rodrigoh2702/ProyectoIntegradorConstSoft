@@ -35,10 +35,16 @@ public class Game {
 
         boolean finished = false;
         while (!finished) {
-            Command command = parser.getCommand();
-            finished = processCommand(command);
+            finished = stillPlaying();
         }
         System.out.println("Thank you for playing.  Good bye.");
+    }
+
+    public boolean stillPlaying(){
+        boolean finished = false;
+        Command command = parser.getCommand();
+        finished = processCommand(command);
+        return finished;
     }
 
     private void printWelcome() {
