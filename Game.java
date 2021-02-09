@@ -75,11 +75,11 @@ public class Game {
         String commandWord = command.getCommandWord();
         if (commandWord.equals("help"))
             printHelp();
-        else if (commandWord.equals("go"))
+        if (commandWord.equals("go"))
             goRoom(command);
-        else if (commandWord.equals("quit"))
+        if (commandWord.equals("quit"))
             wantToQuit = quit(command);
-
+            
         return wantToQuit;
     }
 
