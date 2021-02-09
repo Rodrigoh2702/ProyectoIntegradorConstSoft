@@ -1,9 +1,9 @@
 public class Room {
-    public String description;
-    public Room northExit;
-    public Room southExit;
-    public Room eastExit;
-    public Room westExit;
+    private String description;
+    private Room northExit;
+    private Room southExit;
+    private Room eastExit;
+    private Room westExit;
 
     public Room(String description) {
         this.description = description;
@@ -22,6 +22,22 @@ public class Room {
 
     public String getDescription() {
         return description;
+    }
+
+    public Room getNorthExit(){
+        return northExit;
+    }
+
+    public Room getSouthExit(){
+        return southExit;
+    }
+
+    public Room getEastExit(){
+        return eastExit;
+    }
+
+    public Room getWestExit(){
+        return westExit;
     }
 
     public boolean isNull(){
