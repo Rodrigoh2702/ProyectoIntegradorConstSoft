@@ -1,14 +1,14 @@
 public class Command {
-    private String commandWord;
+    private String firstWord;
     private String secondWord;
 
     public Command(String firstWord, String secondWord) {
-        commandWord = firstWord;
+        this.firstWord = firstWord;
         this.secondWord = secondWord;
     }
 
     public String getCommandWord() {
-        return commandWord;
+        return firstWord;
     }
 
     public String getSecondWord() {
@@ -16,7 +16,7 @@ public class Command {
     }
 
     public boolean isUnknown() {
-        return (commandWord == null);
+        return (firstWord == null);
     }
 
     public boolean hasSecondWord() {
