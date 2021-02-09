@@ -75,11 +75,11 @@ public class Game {
         String commandWord = command.getCommandWord();
         if (commandWord.equals("help"))
             printHelp();
-        else if (commandWord.equals("go"))
+        if (commandWord.equals("go"))
             goRoom(command);
-        else if (commandWord.equals("quit"))
+        if (commandWord.equals("quit"))
             wantToQuit = quit(command);
-
+            
         return wantToQuit;
     }
 
@@ -102,39 +102,12 @@ public class Game {
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = null;
-        if (direction.equals("north")) {
-            nextRoom = currentRoom.northExit;
-        }
-        if (direction.equals("east")) {
-            nextRoom = currentRoom.eastExit;
-        }
-        if (direction.equals("south")) {
-            nextRoom = currentRoom.southExit;
-        }
-        if (direction.equals("west")) {
-            nextRoom = currentRoom.westExit;
-        }
+        Room nextRoom = assignNextRoom(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         } else {
-            currentRoom = nextRoom;
-            System.out.println("You are " + currentRoom.getDescription());
-            System.out.print("Exits: ");
-            if (currentRoom.northExit != null) {
-                System.out.print("north ");
-            }
-            if (currentRoom.eastExit != null) {
-                System.out.print("east ");
-            }
-            if (currentRoom.southExit != null) {
-                System.out.print("south ");
-            }
-            if (currentRoom.westExit != null) {
-                System.out.print("west ");
-            }
-            System.out.println();
+            moveRoom(nextRoom);
         }
     }
 
@@ -145,5 +118,47 @@ public class Game {
         } else {
             return true; // signal that we want to quit
         }
+    }
+
+    //assigs the room to move
+    private Room assignNextRoom(String direction){
+        if (direction.equals("north")) {
+            return currentRoom.northExit;
+        }
+        if (direction.equals("east")) {
+            return currentRoom.eastExit;
+        }
+        if (direction.equals("south")) {
+            return currentRoom.southExit;
+        }
+        if (direction.equals("west")) {
+            return currentRoom.westExit;
+        }
+        return null;
+    }
+
+    //changes your room
+    private void moveRoom(Room nextRoom){
+        currentRoom = nextRoom;
+        System.out.println("You are " + currentRoom.getDescription());
+        System.out.print("Exits: ");
+        if (currentRoom.northExit != null) {
+            System.out.print("north ");
+        }
+        if (currentRoom.eastExit != null) {
+            System.out.print("east ");
+        }
+        if (currentRoom.southExit != null) {
+            System.out.print("south ");
+        }
+        if (currentRoom.westExit != null) {
+            System.out.print("west ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.play();
     }
 }
