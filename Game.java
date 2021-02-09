@@ -18,13 +18,14 @@ public class Game {
         office = new Room("in the computing admin office");
         nullRoom = new NullRoom();
 
-        // initialise room exits
+        initializeRoomExits(outside, theatre, pub, lab, office, nullRoom);
+    }
+    public void initializeRoomExits(Room outside, Room theatre, Room pub, Room lab, Room office, Room nullRoom){
         outside.setExits(nullRoom, theatre, lab, pub);
         theatre.setExits(nullRoom, nullRoom, nullRoom, outside);
         pub.setExits(nullRoom, outside, nullRoom, nullRoom);
         lab.setExits(outside, office, nullRoom, nullRoom);
         office.setExits(nullRoom, nullRoom, nullRoom, lab);
-
         currentRoom = outside; // start game outside
     }
 
