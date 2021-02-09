@@ -121,7 +121,7 @@ public class Game {
         if (direction.equals("west")) {
             return currentRoom.getWestExit();
         }
-        return null;
+        return new NullRoom();
     }
 
     //changes your room
