@@ -63,9 +63,9 @@ public class Game {
 
         String commandWord = command.getCommandWord();
         if (commandWord.equals("help"))
-            return printHelp();
+            printHelp();
         if (commandWord.equals("go"))
-            return goRoom(command);
+            goRoom(command);
         if (commandWord.equals("quit"))
             return quit(command);
             
@@ -73,20 +73,18 @@ public class Game {
     }
 
     // implementations of user commands:
-    private boolean printHelp() {
+    private void printHelp() {
         System.out.println("You are lost. You are alone. You wander");
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
         System.out.println("   go quit help");
-        return true;
     }
 
-    private boolean goRoom(Command command) {
+    private void goRoom(Command command) {
         if (!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             System.out.println("Go where?");
-            return true;
         }
 
         String direction = command.getSecondWord();
@@ -95,12 +93,9 @@ public class Game {
 
         if (nextRoom.isNull()) {
             System.out.println("There is no door!");
-            return true;
         } else {
             moveRoom(nextRoom);
-            return true;
         }
-
     }
 
     private boolean quit(Command command) {
